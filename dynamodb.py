@@ -9,6 +9,7 @@ client=boto3.client("dynamodb")
 
 #Create DynamoDb table*************************************************************************************************************************
 def create_company_table():
+    '''********************CREATE DYNAMODB TABLE********************'''
     table=client.create_table(
         TableName="Company", 
         KeySchema=[
@@ -35,6 +36,7 @@ def create_company_table():
 
 #Create record in a dynamo table*******************************************************************************************************************
 def put_company(name,year,HeadOffice,employees):
+    '''********************CREATE RECORD IN A DYNAMO TABLE********************'''
     response=client.put_item(
         TableName="Company",
         Item={
@@ -57,6 +59,7 @@ def put_company(name,year,HeadOffice,employees):
 
 #Get a record from dynamodb table***************************************************************************************************************
 def get_company(name, year):
+    '''********************GET A RECORD FROM DYNAMODB TABLE********************'''
     try:
         response=client.get_item(
             TableName='Company',
@@ -76,6 +79,7 @@ def get_company(name, year):
 
 #Update a record in dynamodb table*****************************************************************************************************************
 def update_company(name,year,employees,HeadOffice,team):
+    '''********************UPDATE A RECORD IN DYNAMODB TABLE********************'''
     response=client.update_item(
         TableName='Company',
         Key={
@@ -109,6 +113,7 @@ def update_company(name,year,employees,HeadOffice,team):
 
 #Increment an atomic counter in dynamodb**************************************************************************************************************
 def increase_employees(name,year,employee_increase):
+    '''********************INCREMENT AN ATOMIC COUNTER IN DYNAMODB********************'''
     response=client.update_item(
         TableName='Company',
         Key={
@@ -134,6 +139,7 @@ def increase_employees(name,year,employee_increase):
 
 #Delete an item in dynamodb table*******************************************************************************************************************
 def delete_old_company(name,year,employees):
+    '''********************DELETE AN ITEM IN DYNAMODB TABLE********************'''
     try:
         response=client.delete_item(
             TableName='Company',
@@ -166,6 +172,7 @@ def delete_old_company(name,year,employees):
 
 if __name__=='__main__':
     #CREATE DYNAMODB------------------------------------------------------------------------------------------------------------------------
+    print(create_company_table.__doc__)
     company_table=create_company_table()
     print("create dynamodb succeded.......")
     print(f"Table status: {company_table}")
@@ -173,12 +180,14 @@ if __name__=='__main__':
     time.sleep(30)
     
     #INSERT IN TO DYNAMODB-------------------------------------------------------------------------------------------------------------------
+    print(put_company.__doc__)
     company_resp=put_company("EntropikTech",2016,"Bangalore",200)
     print("insert in to dynamodb succeeded")
     pprint(company_resp, sort_dicts=False)
     
 
     #GET AN ITEM FROM DYNAMODB---------------------------------------------------------------------------------------------------------------------
+    print(get_company.__doc__)
     company=get_company('EntropikTech',2016)
     if company:
         print('Get an item from dynamodb succeeded.......')
@@ -186,18 +195,21 @@ if __name__=='__main__':
 
 
     #UPDATE ITEM IN DYNAMODB--------------------------------------------------------------------------------------------------------------------
+    print(update_company.__doc__)
     update_response=update_company("EntropikTech",2016,200,"bangalore",["SalesForce","BackEnd","FrontEnd","DevOps"])
     print("update an item in dynamodb succeeded........")
     pprint(update_response, sort_dicts=False)
 
 
     #INCREAMENT AN ATOMIC COUNTER IN DYNAMODB------------------------------------------------------------------------------------------------------
+    print(increase_employees.__doc__)
     update_response=increase_employees("EntropikTech",2016,50)
     print('Increment an atomic counter in dynamodb succeeded')
     pprint(update_response, sort_dicts=False)
 
 
     #DELETE AN ITEM IN DYNAMODB TABLE---------------------------------------------------------------------------------------------------------------
+    print(delete_old_company.__doc__)
     delete_response=delete_old_company("EntropikTech",2016,260)
     if(delete_response):
         print("Delete an item dynamodb succeeded.........")
